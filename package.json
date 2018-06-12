@@ -1,0 +1,39 @@
+{
+  "name": "table-class",
+  "description": "Utility class for easier handling of two-dimensional arrays.",
+  "author": {
+    "name": "Robert Balcerowicz",
+    "email": "balcerowicz87@gmail.com"
+  },
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "prepublish": "yarn run build",
+    "test": "jest --coverage --watchAll"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/"
+    ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "parser": "flow"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.0.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.74.0",
+    "jest": "^23.1.0",
+    "regenerator-runtime": "^0.11.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
+  }
+}
