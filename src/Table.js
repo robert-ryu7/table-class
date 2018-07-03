@@ -78,9 +78,10 @@ class Table<T> {
    * @param {?number} x X index.
    * @param {?number} y Y index.
    * @param {?T} value Value to be set.
+   * @returns {Table<T>} This table.
    * @memberof Table
    */
-  set(x: ?number, y: ?number, value: ?T): void {
+  set(x: ?number, y: ?number, value: ?T): Table<T> {
     if (x != null && y != null) {
       this._rows[y][x] = value;
     } else if (x == null && y != null) {
@@ -90,6 +91,7 @@ class Table<T> {
     } else {
       throw new Error("Invalid arguments, at least one coordinate is required.");
     }
+    return this;
   }
 
   /**
