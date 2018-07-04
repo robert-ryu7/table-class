@@ -1,6 +1,6 @@
 // @flow
 
-const range = require("lodash/range");
+const indexes = require("./utils/indexes");
 
 /**
  * Represents a two-dimensional array of data.
@@ -23,7 +23,7 @@ class Table<T> {
   constructor(width: number, height: number, callbackfn?: (x: number, y: number) => ?T) {
     this._width = width;
     this._height = height;
-    this._rows = range(0, height).map(y => range(0, width).map(x => (callbackfn ? callbackfn(x, y) : null)));
+    this._rows = indexes(height).map(y => indexes(width).map(x => (callbackfn ? callbackfn(x, y) : null)));
   }
 
   /**
@@ -67,7 +67,7 @@ class Table<T> {
    * @memberof Table
    */
   get cols(): Array<Array<?T>> {
-    return range(0, this._width).map(x => this.col(x));
+    return indexes(this._width).map(x => this.col(x));
   }
 
   /**
@@ -85,9 +85,9 @@ class Table<T> {
     if (x != null && y != null) {
       this._rows[y][x] = value;
     } else if (x == null && y != null) {
-      range(0, this.width).forEach(x => this.set(x, y, value));
+      indexes(this.width).forEach(x => this.set(x, y, value));
     } else if (x != null && y == null) {
-      range(0, this.height).forEach(y => this.set(x, y, value));
+      indexes(this.height).forEach(y => this.set(x, y, value));
     } else {
       throw new Error("Invalid arguments, at least one coordinate is required.");
     }
@@ -186,7 +186,7 @@ class Table<T> {
     const texts = this.map((value, x, y, table) => {
       let text = new String(value).toString();
       if (!widths[x]) widths[x] = Math.max(...table.cols[x].map(value => new String(value).length));
-      return text + range(0, widths[x] - text.length).reduce(acc => acc + " ", "");
+      return text + indexes(widths[x] - text.length).reduce(acc => acc + " ", "");
     });
     return `\n${texts.rows.map(row => row.join(" | ")).join("\n")}\n`;
   }
