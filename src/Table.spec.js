@@ -136,4 +136,10 @@ describe("Table", () => {
     const expectedResult = "1-0";
     expect(instance.get(1, 0)).toEqual(expectedResult);
   });
+
+  it("has reduce method which accumulates all table values using given callback function", () => {
+    const instance = new Table(10, 20, () => 0.5);
+    const expectedResult = 101;
+    expect(instance.reduce((acc, value) => acc + value, 1)).toEqual(expectedResult);
+  });
 });

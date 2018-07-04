@@ -141,6 +141,28 @@ class Table<T> {
   }
 
   /**
+   * Calls the specified callback function for all table values and returns accumulated result.
+   *
+   * @template U Type of accumulated result.
+   * @param {(previousValue: U, currentValue: ?T, currentX: number, currentY: number, table: Table<T>) => U} callbackfn The reduce method calls this function one time for each value of the table.
+   * @param {U} initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of a table value.
+   * @returns {U} Accumulated result.
+   * @memberof Table
+   */
+  reduce<U>(
+    callbackfn: (previousValue: U, currentValue: ?T, currentX: number, currentY: number, table: Table<T>) => U,
+    initialValue: U
+  ): U {
+    let value = initialValue;
+    for (let y = 0; y < this._height; y++) {
+      for (let x = 0; x < this._width; x++) {
+        value = callbackfn(value, this._rows[y][x], x, y, this);
+      }
+    }
+    return value;
+  }
+
+  /**
    * Returns a string representation of this table.
    *
    * @returns {string} String representation of table.
