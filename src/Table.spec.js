@@ -130,4 +130,70 @@ describe("Table", () => {
     ].join("");
     expect(instance.toString()).toEqual(expectedResult);
   });
+
+  it("has get method which returns value at given coordinates", () => {
+    const instance = new Table(3, 3, (x, y) => `${x}-${y}`);
+    const expectedResult = "1-0";
+    expect(instance.get(1, 0)).toEqual(expectedResult);
+  });
+
+  it("has reduce method which accumulates all table values using given callback function", () => {
+    const instance = new Table(10, 20, () => 0.5);
+    const expectedResult = 101;
+    expect(instance.reduce((acc, value) => acc + value, 1)).toEqual(expectedResult);
+  });
+
+  it("has forEach method which calls given function for each table element", () => {
+    const mockFn = jest.fn();
+    const instance = new Table(3, 3, (x, y) => `${x}-${y}`);
+    instance.forEach(mockFn);
+    expect(mockFn.mock.calls.length).toBe(9);
+  });
+
+  it("has forEach methow which passes current value as well as coordinates to callback function", () => {
+    const mockFn = jest.fn((value, x, y) => `${value}-${x}-${y}`);
+    const instance = new Table(3, 3, (x, y) => x + y);
+    const expectedResult = ["0-0-0", "1-1-0", "2-2-0", "1-0-1", "2-1-1", "3-2-1", "2-0-2", "3-1-2", "4-2-2"];
+    instance.forEach(mockFn);
+    expect(mockFn.mock.results.map(result => result.value)).toEqual(expectedResult);
+  });
+
+  it("has forEach method which accepts second argument used for this value in callback function", () => {
+    const instance = new Table(3, 3, (x, y) => "-");
+    const thisArg = { a: 1, b: 2, c: 3 };
+    const mockFn = jest.fn(function() {
+      return this === thisArg;
+    });
+    const expectedResult = [true, true, true, true, true, true, true, true, true];
+    instance.forEach(mockFn, thisArg);
+    expect(mockFn.mock.results.map(result => result.value)).toEqual(expectedResult);
+  });
+
+  it("has fromRows method which creates table out of rows array", () => {
+    const rows = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = ["\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromRows method which handles variable rows length by setting null for missing values", () => {
+    const rows = [[1, 2], [1, 2, 3], [1, 2]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = ["\n", "1 | 2 | null", "\n", "1 | 2 | 3   ", "\n", "1 | 2 | null", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromCols method which creates table out of columns array", () => {
+    const cols = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
+    const instance = Table.fromCols(cols);
+    const expectedResult = ["\n", "1 | 1 | 1", "\n", "2 | 2 | 2", "\n", "3 | 3 | 3", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromCols method which handles variable columns length by setting null for missing values", () => {
+    const cols = [[1, 2], [1, 2, 3], [1, 2]];
+    const instance = Table.fromCols(cols);
+    const expectedResult = ["\n", "1    | 1 | 1   ", "\n", "2    | 2 | 2   ", "\n", "null | 3 | null", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
 });
