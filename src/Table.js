@@ -190,6 +190,40 @@ class Table<T> {
     });
     return `\n${texts.rows.map(row => row.join(" | ")).join("\n")}\n`;
   }
+
+  /**
+   * Returns a new table populated with values from given array.
+   *
+   * It handles variable rows length by setting null for missing values.
+   *
+   * @static
+   * @template U Type of data that will be stored by new table.
+   * @param {Array<Array<?U>>} rows Table data organized by rows.
+   * @returns {Table<U>} New table with given values.
+   * @memberof Table
+   */
+  static fromRows<U>(rows: Array<Array<?U>>): Table<U> {
+    const height = rows.length;
+    const width = Math.max(...rows.map(row => row.length));
+    return new Table(width, height, (x, y) => rows[y][x] || null);
+  }
+
+  /**
+   * Returns a new table populated with values from given array.
+   *
+   * It handles variable columns length by setting null for missing values.
+   *
+   * @static
+   * @template U Type of data that will be stored by new table.
+   * @param {Array<Array<?U>>} cols Table data organized by columns.
+   * @returns {Table<U>} New table with given values.
+   * @memberof Table
+   */
+  static fromCols<U>(cols: Array<Array<?U>>): Table<U> {
+    const width = cols.length;
+    const height = Math.max(...cols.map(col => col.length));
+    return new Table(width, height, (x, y) => cols[x][y] || null);
+  }
 }
 
 module.exports = Table;

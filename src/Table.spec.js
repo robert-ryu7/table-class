@@ -168,4 +168,32 @@ describe("Table", () => {
     instance.forEach(mockFn, thisArg);
     expect(mockFn.mock.results.map(result => result.value)).toEqual(expectedResult);
   });
+
+  it("has fromRows method which creates table out of rows array", () => {
+    const rows = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = ["\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromRows method which handles variable rows length by setting null for missing values", () => {
+    const rows = [[1, 2], [1, 2, 3], [1, 2]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = ["\n", "1 | 2 | null", "\n", "1 | 2 | 3   ", "\n", "1 | 2 | null", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromCols method which creates table out of columns array", () => {
+    const cols = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
+    const instance = Table.fromCols(cols);
+    const expectedResult = ["\n", "1 | 1 | 1", "\n", "2 | 2 | 2", "\n", "3 | 3 | 3", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
+
+  it("has fromCols method which handles variable columns length by setting null for missing values", () => {
+    const cols = [[1, 2], [1, 2, 3], [1, 2]];
+    const instance = Table.fromCols(cols);
+    const expectedResult = ["\n", "1    | 1 | 1   ", "\n", "2    | 2 | 2   ", "\n", "null | 3 | null", "\n"].join("");
+    expect(instance.toString()).toEqual(expectedResult);
+  });
 });
