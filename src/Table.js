@@ -95,6 +95,18 @@ class Table<T> {
   }
 
   /**
+   * Returns value at given coordinates.
+   *
+   * @param {number} x X index.
+   * @param {number} y Y index.
+   * @returns {?T} Value at given coordinates.
+   * @memberof Table
+   */
+  get(x: number, y: number): ?T {
+    return this._rows[y][x];
+  }
+
+  /**
    * Returns a specific row.
    *
    * @param {number} y Index of a row to be returned.

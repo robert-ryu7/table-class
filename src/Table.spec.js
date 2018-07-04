@@ -130,4 +130,10 @@ describe("Table", () => {
     ].join("");
     expect(instance.toString()).toEqual(expectedResult);
   });
+
+  it("has get method which returns value at given coordinates", () => {
+    const instance = new Table(3, 3, (x, y) => `${x}-${y}`);
+    const expectedResult = "1-0";
+    expect(instance.get(1, 0)).toEqual(expectedResult);
+  });
 });
