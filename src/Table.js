@@ -141,25 +141,38 @@ class Table<T> {
   }
 
   /**
-   * Calls the specified callback function for all table values and returns accumulated result.
+   * Calls the specified callback function for all table values and returns accumulation result.
    *
-   * @template U Type of accumulated result.
+   * @template U Type of accumulation result.
    * @param {(previousValue: U, currentValue: ?T, currentX: number, currentY: number, table: Table<T>) => U} callbackfn The reduce method calls this function one time for each value of the table.
    * @param {U} initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of a table value.
-   * @returns {U} Accumulated result.
+   * @returns {U} Accumulation result.
    * @memberof Table
    */
   reduce<U>(
     callbackfn: (previousValue: U, currentValue: ?T, currentX: number, currentY: number, table: Table<T>) => U,
     initialValue: U
   ): U {
-    let value = initialValue;
+    let acc = initialValue;
+    this.forEach((value, x, y) => {
+      acc = callbackfn(acc, value, x, y, this);
+    });
+    return acc;
+  }
+
+  /**
+   * Performs the specified action for each element in a table.
+   *
+   * @param {(value: ?T, x: number, y: number, table: Table<T>) => void} callbackfn Function called one time for each element in the table.
+   * @param {*} [thisArg] An object to which the this keyword can refer in the callbackfn function.
+   * @memberof Table
+   */
+  forEach(callbackfn: (value: ?T, x: number, y: number, table: Table<T>) => void, thisArg?: any): void {
     for (let y = 0; y < this._height; y++) {
       for (let x = 0; x < this._width; x++) {
-        value = callbackfn(value, this._rows[y][x], x, y, this);
+        callbackfn.call(thisArg, this._rows[y][x], x, y, this);
       }
     }
-    return value;
   }
 
   /**

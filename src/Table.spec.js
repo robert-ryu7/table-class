@@ -142,4 +142,30 @@ describe("Table", () => {
     const expectedResult = 101;
     expect(instance.reduce((acc, value) => acc + value, 1)).toEqual(expectedResult);
   });
+
+  it("has forEach method which calls given function for each table element", () => {
+    const mockFn = jest.fn();
+    const instance = new Table(3, 3, (x, y) => `${x}-${y}`);
+    instance.forEach(mockFn);
+    expect(mockFn.mock.calls.length).toBe(9);
+  });
+
+  it("has forEach methow which passes current value as well as coordinates to callback function", () => {
+    const mockFn = jest.fn((value, x, y) => `${value}-${x}-${y}`);
+    const instance = new Table(3, 3, (x, y) => x + y);
+    const expectedResult = ["0-0-0", "1-1-0", "2-2-0", "1-0-1", "2-1-1", "3-2-1", "2-0-2", "3-1-2", "4-2-2"];
+    instance.forEach(mockFn);
+    expect(mockFn.mock.results.map(result => result.value)).toEqual(expectedResult);
+  });
+
+  it("has forEach method which accepts second argument used for this value in callback function", () => {
+    const instance = new Table(3, 3, (x, y) => "-");
+    const thisArg = { a: 1, b: 2, c: 3 };
+    const mockFn = jest.fn(function() {
+      return this === thisArg;
+    });
+    const expectedResult = [true, true, true, true, true, true, true, true, true];
+    instance.forEach(mockFn, thisArg);
+    expect(mockFn.mock.results.map(result => result.value)).toEqual(expectedResult);
+  });
 });
