@@ -5,11 +5,13 @@
     "name": "Robert Balcerowicz",
     "email": "balcerowicz87@gmail.com"
   },
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "babel src/ -d lib/",
+    "build": "yarn build:node && yarn build:browser",
+    "build:node": "babel src/ -d lib/",
+    "build:browser": "browserify lib/index.js -o lib/browser.js -t [ babelify --presets env ] --standalone Table",
     "prepare": "yarn run build",
     "test": "jest --coverage --watchAll"
   },
@@ -29,6 +31,8 @@
     "babel-jest": "^23.0.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
     "flow-bin": "^0.74.0",
     "jest": "^23.1.0",
     "regenerator-runtime": "^0.11.1"
