@@ -192,6 +192,46 @@ class Table<T> {
   }
 
   /**
+   * Rotates table clockwise.
+   *
+   * @returns {Table<T>} New table.
+   * @memberof Table
+   */
+  cw(): Table<T> {
+    return new Table(this._height, this._width, (x, y) => this.get(y, this._height - 1 - x));
+  }
+
+  /**
+   * Rotates table counterclockwise.
+   *
+   * @returns {Table<T>} New table.
+   * @memberof Table
+   */
+  ccw(): Table<T> {
+    return new Table(this._height, this._width, (x, y) => this.get(this._width - 1 - y, x));
+  }
+
+  /**
+   * Flips table horizontally.
+   *
+   * @returns {Table<T>} New table.
+   * @memberof Table
+   */
+  flipX(): Table<T> {
+    return new Table(this._width, this._height, (x, y) => this.get(this._width - 1 - x, y));
+  }
+
+  /**
+   * Flips table vertically.
+   *
+   * @returns {Table<T>} New table.
+   * @memberof Table
+   */
+  flipY(): Table<T> {
+    return new Table(this._width, this._height, (x, y) => this.get(x, this._height - 1 - y));
+  }
+
+  /**
    * Returns a new table populated with values from given array.
    *
    * It handles variable rows length by setting null for missing values.

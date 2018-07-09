@@ -172,28 +172,56 @@ describe("Table", () => {
   it("has fromRows method which creates table out of rows array", () => {
     const rows = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
     const instance = Table.fromRows(rows);
-    const expectedResult = ["\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n", "1 | 2 | 3", "\n"].join("");
-    expect(instance.toString()).toEqual(expectedResult);
+    const expectedResult = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
+    expect(instance.rows).toEqual(expectedResult);
   });
 
   it("has fromRows method which handles variable rows length by setting null for missing values", () => {
     const rows = [[1, 2], [1, 2, 3], [1, 2]];
     const instance = Table.fromRows(rows);
-    const expectedResult = ["\n", "1 | 2 | null", "\n", "1 | 2 | 3   ", "\n", "1 | 2 | null", "\n"].join("");
-    expect(instance.toString()).toEqual(expectedResult);
+    const expectedResult = [[1, 2, null], [1, 2, 3], [1, 2, null]];
+    expect(instance.rows).toEqual(expectedResult);
   });
 
   it("has fromCols method which creates table out of columns array", () => {
     const cols = [[1, 2, 3], [1, 2, 3], [1, 2, 3]];
     const instance = Table.fromCols(cols);
-    const expectedResult = ["\n", "1 | 1 | 1", "\n", "2 | 2 | 2", "\n", "3 | 3 | 3", "\n"].join("");
-    expect(instance.toString()).toEqual(expectedResult);
+    const expectedResult = [[1, 1, 1], [2, 2, 2], [3, 3, 3]];
+    expect(instance.rows).toEqual(expectedResult);
   });
 
   it("has fromCols method which handles variable columns length by setting null for missing values", () => {
     const cols = [[1, 2], [1, 2, 3], [1, 2]];
     const instance = Table.fromCols(cols);
-    const expectedResult = ["\n", "1    | 1 | 1   ", "\n", "2    | 2 | 2   ", "\n", "null | 3 | null", "\n"].join("");
-    expect(instance.toString()).toEqual(expectedResult);
+    const expectedResult = [[1, 1, 1], [2, 2, 2], [null, 3, null]];
+    expect(instance.rows).toEqual(expectedResult);
+  });
+
+  it("has cw method which rotates table clockwise", () => {
+    const rows = [[1, 2], [10, 20], [100, 200]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = [[100, 10, 1], [200, 20, 2]];
+    expect(instance.cw().rows).toEqual(expectedResult);
+  });
+
+  it("has ccw method which rotates table counterclockwise", () => {
+    const rows = [[1, 2], [10, 20], [100, 200]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = [[2, 20, 200], [1, 10, 100]];
+    expect(instance.ccw().rows).toEqual(expectedResult);
+  });
+
+  it("has flipX method which flips table horizontally", () => {
+    const rows = [[1, 2], [10, 20], [100, 200]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = [[2, 1], [20, 10], [200, 100]];
+    expect(instance.flipX().rows).toEqual(expectedResult);
+  });
+
+  it("has flipY method which flips table vertically", () => {
+    const rows = [[1, 2], [10, 20], [100, 200]];
+    const instance = Table.fromRows(rows);
+    const expectedResult = [[100, 200], [10, 20], [1, 2]];
+    expect(instance.flipY().rows).toEqual(expectedResult);
   });
 });
