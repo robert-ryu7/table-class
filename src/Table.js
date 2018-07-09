@@ -5,7 +5,6 @@ const indexes = require("./utils/indexes");
 /**
  * Represents a two-dimensional array of data.
  *
- * @class Table
  * @template T Type of data that will be stored by this table.
  */
 class Table<T> {
