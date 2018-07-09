@@ -14,10 +14,17 @@ class Table<T> {
   _rows: Array<Array<?T>>;
 
   /**
+   * @callback Table~constructorCallback
+   * @param {number} x X coordinate.
+   * @param {number} y Y coordinate.
+   * @returns {?T} Value for given coordinates.
+   */
+
+  /**
    * Creates an instance of Table.
    * @param {number} width Horizontal size of the array.
    * @param {number} height Vertical size of the array.
-   * @param {(x: number, y: number) => ?T} [callbackfn] This function is used to populate table during initialization.
+   * @param {Table~constructorCallback} [callbackfn] This function is used to populate table during initialization.
    * @memberof Table
    */
   constructor(width: number, height: number, callbackfn?: (x: number, y: number) => ?T) {
@@ -129,10 +136,19 @@ class Table<T> {
   }
 
   /**
+   * @callback Table~mapCallback
+   * @param {?T} value Current value at given coordinates.
+   * @param {number} x X coordinate.
+   * @param {number} y Y coordinate.
+   * @param {Table<T>} table Current table.
+   * @returns {?U} New value for given coordinates.
+   */
+
+  /**
    * Creates new table using this table values.
    *
    * @template U Type of data that will be stored by new table.
-   * @param {(value: ?T, x: number, y: number, table: Table<T>) => ?U} callbackfn This function is used to populate new table using current table values.
+   * @param {Table~mapCallback} callbackfn This function is used to populate new table using current table values.
    * @returns {Table<U>} New table.
    * @memberof Table
    */
@@ -141,10 +157,20 @@ class Table<T> {
   }
 
   /**
+   * @callback Table~reduceCallback
+   * @param {U} previousValue Previous accumulation result.
+   * @param {?T} currentValue Value at given coordinates.
+   * @param {number} currentX X coordinate.
+   * @param {number} currentY Y coordinate.
+   * @param {Table<T>} table Current table.
+   * @returns {U} Accumulation result.
+   */
+
+  /**
    * Calls the specified callback function for all table values and returns accumulation result.
    *
    * @template U Type of accumulation result.
-   * @param {(previousValue: U, currentValue: ?T, currentX: number, currentY: number, table: Table<T>) => U} callbackfn The reduce method calls this function one time for each value of the table.
+   * @param {Table~reduceCallback} callbackfn The reduce method calls this function one time for each value of the table.
    * @param {U} initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of a table value.
    * @returns {U} Accumulation result.
    * @memberof Table
@@ -161,9 +187,17 @@ class Table<T> {
   }
 
   /**
+   * @callback Table~forEachCallback
+   * @param {?T} value Value at given coordinates.
+   * @param {number} x X coordinate.
+   * @param {number} y Y coordinate.
+   * @param {Table<T>} table Current table.
+   */
+
+  /**
    * Performs the specified action for each element in a table.
    *
-   * @param {(value: ?T, x: number, y: number, table: Table<T>) => void} callbackfn Function called one time for each element in the table.
+   * @param {Table~forEachCallback} callbackfn Function called one time for each element in the table.
    * @param {*} [thisArg] An object to which the this keyword can refer in the callbackfn function.
    * @memberof Table
    */
