@@ -19,9 +19,10 @@
   "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:node && yarn build:browser",
+    "build": "yarn build:node && yarn build:browser && yarn build:documentation",
     "build:node": "babel src/ -d lib/",
     "build:browser": "browserify lib/index.js -o lib/browser.js -t [ babelify --presets env ] --standalone Table",
+    "build:documentation": "jsdoc2md ./lib/Table.js > README.md",
     "prepare": "yarn run build",
     "test": "jest --coverage --watchAll"
   },
@@ -45,6 +46,7 @@
     "browserify": "^16.2.2",
     "flow-bin": "^0.74.0",
     "jest": "^23.1.0",
+    "jsdoc-to-markdown": "^4.0.1",
     "regenerator-runtime": "^0.11.1"
   },
   "dependencies": {}
