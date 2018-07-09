@@ -1,6 +1,16 @@
 {
   "name": "table-class",
   "description": "Utility class for easier handling of two-dimensional arrays.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robert-ryu7/table-class.git"
+  },
+  "keywords": [
+    "table",
+    "class",
+    "utility",
+    "array"
+  ],
   "author": {
     "name": "Robert Balcerowicz",
     "email": "balcerowicz87@gmail.com"
